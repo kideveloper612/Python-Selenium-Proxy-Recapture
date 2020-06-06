@@ -4,6 +4,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
+import random
 load_dotenv(verbose=True)
 
 
@@ -88,13 +89,21 @@ def get_chromedriver(background_js="", use_proxy=False, user_agent=None):
             zp.writestr("manifest.json", manifest_json)
             zp.writestr("background.js", background_js)
         chrome_options.add_extension(pluginfile)
-        chrome_options.add_experimental_option("detach", True)
+        # chrome_options.add_experimental_option("detach", True)
     if user_agent:
         chrome_options.add_argument('--user-agent=%s' % user_agent)
     driver = webdriver.Chrome(
         os.path.join(path, 'chromedriver'),
-        chrome_options=chrome_options)
+        options=chrome_options)
     return driver
+
+
+def rand():
+    return random.randint(200, 999)
+
+
+def get_url():
+    return 'https://www.fastpeoplesearch.com/%s-%s-%s' % (rand(), rand(), rand())
 
 
 def main():
@@ -103,7 +112,8 @@ def main():
         back = background(host=proxy)
         driver = get_chromedriver(background_js=back, use_proxy=True)
         # #driver.get('https://www.google.com/search?q=my+ip+address')
-        driver.get('https://httpbin.org/ip')
+        driver.get(get_url())
+        time.sleep(10)
 
 
 if __name__ == '__main__':
