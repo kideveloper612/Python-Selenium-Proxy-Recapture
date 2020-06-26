@@ -113,6 +113,7 @@ def main():
         driver = get_chromedriver(background_js=back, use_proxy=True)
         # #driver.get('https://www.google.com/search?q=my+ip+address')
         driver.get(get_url())
+        driver.find_element_by_tag_name()
         time.sleep(10)
 
 
